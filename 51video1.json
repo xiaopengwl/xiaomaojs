@@ -1,0 +1,81 @@
+[
+  {
+    "id": "51sptv_com",
+    "name": "51视频网",
+    "api": "https://51sptv.com",
+    "nsfw": true,
+    "type": 1,
+    "extra": {
+      "gfw": true,
+      "searchLimit": 20,
+      "js": {
+        "category": [
+          {
+            "text": "首页",
+            "id": "/"
+          },
+          {
+            "text": "今日推荐",
+            "id": "/category/wpcz/"
+          },
+          {
+            "text": "撸片精品",
+            "id": "/category/lpjp/"
+          },
+          {
+            "text": "每日大赛",
+            "id": "/category/meiridasai/"
+          },
+          {
+            "text": "吃瓜爆料",
+            "id": "/category/rdsj/"
+          },
+          {
+            "text": "伦理精选",
+            "id": "/category/lljx/"
+          },
+          {
+            "text": "学生校园",
+            "id": "/category/xsxy/"
+          },
+          {
+            "text": "体育男大",
+            "id": "/category/tynd/"
+          },
+          {
+            "text": "色漫天堂",
+            "id": "/category/smtt/"
+          },
+          {
+            "text": "网红黑料",
+            "id": "/category/whhl/"
+          },
+          {
+            "text": "看片娱乐",
+            "id": "/category/ysyl/"
+          },
+          {
+            "text": "超前点播",
+            "id": "/category/cqdb/"
+          },
+          {
+            "text": "奇趣百科",
+            "id": "/category/qubk/"
+          },
+          {
+            "text": "51原创",
+            "id": "/category/51yc/"
+          },
+          {
+            "text": "短剧影视",
+            "id": "/category/dyds/"
+          }
+        ],
+        "home": "const cate=env.get(\"category\");const page=env.get(\"page\");if(cate==\"/\"){const $=utils_1.kitty.load(await(0,utils_1.req)(env.baseUrl));return $(\"#index article\").toArray().map(item=>{const a=$(item).find(\"a\");const id=a.attr(\"href\")??\"\";let cover=$(item).find(\".blog-background\").css(\"background-image\");if(cover){const match=cover.match(/url\\([\"']?([^\"')]+)[\"']?\\)/);cover=match?match[1]:\"\"}const title=$(item).find(\".post-card-title\").text().trim();const remark=$(item).find(\".post-card-info span:last\").text().trim();return{id,cover,title,remark}}).filter(item=>item.id)}const url=`${env.baseUrl}${cate}page/${page}/`;const $=utils_1.kitty.load(await(0,utils_1.req)(url));return $(\"#index article\").toArray().map(item=>{const a=$(item).find(\"a\");const id=a.attr(\"href\")??\"\";let cover=$(item).find(\".blog-background\").css(\"background-image\");if(cover){const match=cover.match(/url\\([\"']?([^\"')]+)[\"']?\\)/);cover=match?match[1]:\"\"}const title=$(item).find(\".post-card-title\").text().trim();const remark=$(item).find(\".post-card-info span:last\").text().trim();return{id,cover,title,remark}})",
+        "detail": "const id=env.get(\"movieId\");const url=`${env.baseUrl}${id}`;const $=utils_1.kitty.load(await(0,utils_1.req)(url));const title=$(\"h1.post-title\").text().trim();const cover=$(\"meta[property='og:image']\").attr(\"content\")??\"\";const desc=$(\".post-content p\").first().text().trim().substring(0,200);let videos=[];const dplayer=$(\".dplayer\");if(dplayer.length>0){const configStr=dplayer.attr(\"data-config\");if(configStr){try{const config=JSON.parse(configStr);const videoUrl=config?.video?.url;if(videoUrl){videos.push({text:\"播放\",url:videoUrl})}}catch(e){}}}return{id,title,cover,desc,playlist:[{title:\"默认\",videos}]}",
+        "search": "const wd=env.get(\"keyword\");const page=env.get(\"page\");const url=`${env.baseUrl}/search/${encodeURIComponent(wd)}/page/${page}/`;try{const $=utils_1.kitty.load(await(0,utils_1.req)(url));return $(\"#index article\").toArray().map(item=>{const a=$(item).find(\"a\");const id=a.attr(\"href\")??\"\";let cover=$(item).find(\".blog-background\").css(\"background-image\");if(cover){const match=cover.match(/url\\([\"']?([^\"')]+)[\"']?\\)/);cover=match?match[1]:\"\"}const title=$(item).find(\".post-card-title\").text().trim();return{id,cover,title,remark:\"\"}})}catch(e){return[]}",
+        "parseIframe": "const iframe=env.get(\"iframe\");const $=utils_1.kitty.load(await(0,utils_1.req)(`${env.baseUrl}${iframe}`));const dplayer=$(\".dplayer\");if(dplayer.length>0){const configStr=dplayer.attr(\"data-config\");if(configStr){try{const config=JSON.parse(configStr);return config?.video?.url||\"\"}catch(e){}}}return\"\""
+      }
+    }
+  }
+]
