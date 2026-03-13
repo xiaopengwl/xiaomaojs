@@ -1,0 +1,24 @@
+[
+  {
+    "id": "51sptv_v3_fixed",
+    "name": "51视频(结构修复版)",
+    "type": 1,
+    "api": "https://51sptv.com/",
+    "status": true,
+    "nsfw": true,
+    "extra": {
+      "js": {
+        "category": "[{\"text\":\"最新发布\",\"id\":\"/\"},{\"text\":\"网红黑料\",\"id\":\"/category/whhl/\"},{\"text\":\"吃瓜视频\",\"id\":\"/category/cgsp/\"},{\"text\":\"社会猛料\",\"id\":\"/category/shml/\"}]",
+        "home": "async(p,c)=>{const u=c==='/'?`https://51sptv.com/page/${p}/`:`https://51sptv.com${c}page/${p}/`;const r=await fetch(u);const h=await r.text();const i=[];const g=/<article.*?post-card.*?>.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs;let m;while((m=g.exec(h))!==null){i.push({id:m[1],title:m[2],cover:m[3],remark:'点击播放'})}return i}",
+        "search": "async(k,p)=>{const u=`https://51sptv.com/search/${encodeURIComponent(k)}/${p}/`;const r=await fetch(u);const h=await r.text();const i=[];const g=/<article.*?post-card.*?>.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs;let m;while((m=g.exec(h))!==null){i.push({id:m[1],title:m[2],cover:m[3]})}return i}",
+        "detail": "async(id)=>{return{id:id,title:'视频播放',playlist:[{text:'播放线路',urls:[{text:'正片',id:id}]}]}}"
+      },
+      "sniffer": {
+        "mode": 0,
+        "timeout": 12000,
+        "customRegex": "\\.(m3u8|mp4|flv|ts|m4a)",
+        "script": "setTimeout(()=>{const v=document.querySelector('video');if(v){v.play();v.muted=true;}},1000);"
+      }
+    }
+  }
+]
