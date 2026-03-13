@@ -1,0 +1,41 @@
+[
+  {
+    "id": "xingba_json",
+    "name": "杏吧(JSON)",
+    "type": 0,
+    "api": "https://json.xingba222.com/api.php/provide/vod/",
+    "logo": "",
+    "desc": "杏吧资源站",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  },
+  {
+    "id": "xingziyuan_json",
+    "name": "幸资源(JSON)",
+    "type": 0,
+    "api": "https://xzybb1.com/api.php/provide/vod/",
+    "logo": "",
+    "desc": "幸资源站",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  },
+  {
+    "id": "hsck_json",
+    "name": "黄色仓库(JSON)",
+    "type": 0,
+    "api": "https://hsckzy888.com/api.php/provide/vod/",
+    "logo": "",
+    "desc": "黄色仓库资源",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  }
+]
