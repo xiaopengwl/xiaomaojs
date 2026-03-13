@@ -1,11 +1,11 @@
 [
   {
     "id": "xingba_json",
-    "name": "杏吧(JSON)",
+    "name": "杏吧资源",
     "type": 0,
-    "api": "https://json.xingba222.com/api.php/provide/vod/",
+    "api": "https://json.xingba222.com/api.php/provide/vod",
     "logo": "",
-    "desc": "杏吧资源站",
+    "desc": "杏吧资源站 - 精品探花/网红",
     "nsfw": true,
     "status": true,
     "extra": {
@@ -14,9 +14,9 @@
   },
   {
     "id": "xingziyuan_json",
-    "name": "幸资源(JSON)",
+    "name": "幸资源",
     "type": 0,
-    "api": "https://xzybb1.com/api.php/provide/vod/",
+    "api": "https://xzybb1.com/api.php/provide/vod",
     "logo": "",
     "desc": "幸资源站",
     "nsfw": true,
@@ -26,12 +26,64 @@
     }
   },
   {
-    "id": "hsck_json",
-    "name": "黄色仓库(JSON)",
+    "id": "huangse_cangku_json",
+    "name": "黄色仓库",
     "type": 0,
-    "api": "https://hsckzy888.com/api.php/provide/vod/",
+    "api": "https://hsckzy888.com/api.php/provide/vod",
     "logo": "",
     "desc": "黄色仓库资源",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  },
+  {
+    "id": "xiaoji_json",
+    "name": "小鸡资源",
+    "type": 0,
+    "api": "https://api.xjzyapi.xyz/provide/vod",
+    "logo": "",
+    "desc": "小鸡资源站 - 国产/日韩/欧美",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  },
+  {
+    "id": "lebo_json",
+    "name": "乐播资源",
+    "type": 0,
+    "api": "http://lbapiby.com/api.php/provide/vod",
+    "logo": "",
+    "desc": "乐播资源站（若无法使用请自行确认地址）",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 20
+    }
+  },
+  {
+    "id": "jingdong_json",
+    "name": "精东资源",
+    "type": 0,
+    "api": "http://chujia.cc/api.php/provide/vod",
+    "logo": "",
+    "desc": "精东资源 - 麻豆/中文字幕",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "searchLimit": 30
+    }
+  },
+  {
+    "id": "lajiao_json",
+    "name": "辣椒资源",
+    "type": 0,
+    "api": "https://apilj.com/api.php/provide/vod",
+    "logo": "",
+    "desc": "辣椒资源（需确认地址是否有效）",
     "nsfw": true,
     "status": true,
     "extra": {
