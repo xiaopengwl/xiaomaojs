@@ -1,0 +1,24 @@
+[
+  {
+    "id": "51sptv_v5_sniffer",
+    "name": "51视频(嗅探专用版)",
+    "type": 1,
+    "api": "https://51sptv.com",
+    "status": true,
+    "nsfw": true,
+    "extra": {
+      "gfw": true,
+      "js": {
+        "category": "[{\"text\":\"最新发布\",\"id\":\"/\"}]",
+        "home": "async (page) => { try { const res = await fetch(`https://51sptv.com/page/${page}/`); const html = await res.text(); const list = []; const regex = /<a\\s+href=\"(\\/archives\\/\\d+\\/)\"[^>]*>.*?<h2[^>]*class=\"post-card-title\"[^>]*>(.*?)<\\/h2>/g; let m; while ((m = regex.exec(html)) !== null) { list.push({ vod_id: m[1], vod_name: m[2].replace(/<[^>]*>/g,'').trim(), vod_pic: 'https://51sptv.com/usr/themes/Mirages/images/51cg.png' }); } return list; } catch (e) { return []; } }",
+        "detail": "async (id) => { return { vod_id: id, vod_name: '嗅探中...', vod_play_url: '嗅探播放$' + id }; }"
+      },
+      "sniffer": {
+        "mode": 0,
+        "timeout": 25000,
+        "customRegex": "\\.(m3u8|mp4|flv)",
+        "script": "window.onload = function() { var v = document.querySelector('video'); if(v) { v.play(); v.muted = true; } }"
+      }
+    }
+  }
+]
