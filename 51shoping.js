@@ -1,5 +1,10 @@
-// 51视频 JS解析器
-// 分类函数
+// 51视频网 JS解析源
+// 适用于小猫影视
+
+/**
+ * 分类函数 - 获取所有分类
+ * @returns {string} JSON字符串，格式：[{"type_id":"分类ID","type_name":"分类名称"}]
+ */
 function get51Category() {
     const categories = [
         { type_id: "wpcz", type_name: "今日推荐" },
@@ -20,176 +25,168 @@ function get51Category() {
     return JSON.stringify(categories);
 }
 
-// 首页/列表函数 - 支持分类筛选
-function get51Home(page, category) {
-    page = page || 1;
+/**
+ * 首页/列表函数 - 获取视频列表
+ * @param {number} page 页码，从1开始
+ * @returns {string} JSON字符串，格式：{"page":当前页,"pagecount":总页数,"list":[{"vod_id":"ID","vod_name":"标题","vod_pic":"图片URL","vod_remarks":"备注"}]}
+ */
+function get51Home(page) {
+    // 拼接URL
     let url = 'https://d3an8gb8ri1qwv.cloudfront.net/';
-    
-    if (category) {
-        // 分类页：https://d3an8gb8ri1qwv.cloudfront.net/category/xxx/page/2/
-        url = `https://d3an8gb8ri1qwv.cloudfront.net/category/${category}/`;
-        if (page > 1) url = `https://d3an8gb8ri1qwv.cloudfront.net/category/${category}/page/${page}/`;
-    } else {
-        // 首页：https://d3an8gb8ri1qwv.cloudfront.net/page/2/
-        if (page > 1) url = `https://d3an8gb8ri1qwv.cloudfront.net/page/${page}/`;
+    if (page > 1) {
+        url = `https://d3an8gb8ri1qwv.cloudfront.net/page/${page}/`;
     }
     
-    const html = fetch(url);
-    return parseVideoList(html);
-}
-
-// 搜索函数
-function get51Search(keyword, page) {
-    page = page || 1;
-    const searchUrl = `https://d3an8gb8ri1qwv.cloudfront.net/search/${encodeURIComponent(keyword)}/`;
-    const html = fetch(searchUrl);
-    return parseVideoList(html);
-}
-
-// 详情函数 - 提取m3u8视频地址
-function get51Detail(id) {
-    // id是文章URL，如 /archives/188279/
-    const detailUrl = `https://d3an8gb8ri1qwv.cloudfront.net${id}`;
-    const html = fetch(detailUrl);
-    
-    // 解析文章标题
-    const titleMatch = html.match(/<h1[^>]*class="post-title[^>]*>([^<]+)</);
-    const title = titleMatch ? titleMatch[1].trim() : "视频详情";
-    
-    // 解析视频地址 - 从dplayer的data-config中提取
-    const videoUrls = [];
-    
-    // 方法1：提取所有dplayer的data-config
-    const playerMatches = [...html.matchAll(/<div[^>]*class="dplayer"[^>]*data-config='([^']+)'/g)];
-    
-    for (const match of playerMatches) {
-        try {
-            const config = JSON.parse(match[1].replace(/\\/g, ''));
-            if (config.video && config.video.url) {
-                videoUrls.push({
-                    name: "高清线路",
-                    url: config.video.url
-                });
-            }
-        } catch (e) {
-            // 忽略解析错误
+    // 请求首页
+    const html = fetch(url, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         }
-    }
-    
-    // 方法2：如果上面没找到，尝试直接正则匹配video url
-    if (videoUrls.length === 0) {
-        const urlMatches = html.match(/"url":"([^"]+\.m3u8[^"]*)"/);
-        if (urlMatches) {
-            videoUrls.push({
-                name: "高清线路",
-                url: urlMatches[1].replace(/\\\//g, '/')
-            });
-        }
-    }
-    
-    // 如果没有视频地址，返回错误信息
-    if (videoUrls.length === 0) {
-        return JSON.stringify({
-            list: [],
-            msg: "未找到视频地址"
-        });
-    }
-    
-    // 构造返回数据
-    const vod = {
-        vod_id: id,
-        vod_name: title,
-        vod_pic: extractFirstImage(html) || "",
-        vod_remarks: extractRemarks(html) || "点击播放",
-        vod_content: extractContent(html) || title,
-        vod_play_from: "51视频",
-        vod_play_url: videoUrls.map(v => `${v.name}$${v.url}`).join('#')
-    };
-    
-    return JSON.stringify({
-        list: [vod]
     });
-}
-
-// ========== 辅助函数 ==========
-function parseVideoList(html) {
-    const items = [];
     
-    // 匹配文章项的正则
-    const articleRegex = /<article[^>]*itemscope[^>]*>([\s\S]*?)<\/article>/g;
-    const articles = [...html.matchAll(articleRegex)];
+    const list = [];
     
-    for (const article of articles) {
-        const articleHtml = article[1];
+    // 解析文章列表
+    // 使用正则匹配每个文章块
+    const articleRegex = /<article[\s\S]*?<a href="([^"]+)"[\s\S]*?<h2 class="post-card-title"[^>]*>([\s\S]*?)<\/h2>[\s\S]*?background-image[:\s]*url\(['"]?([^'")]+)['"]?\)/g;
+    let match;
+    while ((match = articleRegex.exec(html)) !== null) {
+        const link = match[1];
+        const title = match[2].replace(/<[^>]+>/g, '').trim(); // 去除HTML标签
+        const pic = match[3];
         
-        // 提取链接
-        const linkMatch = articleHtml.match(/<a[^>]*href="([^"]+)"[^>]*>/);
-        if (!linkMatch) continue;
+        // 获取分类信息（如果有）
+        const categoryMatch = html.substr(match.index).match(/<span>([^<]+)<\/span>/);
+        const remark = categoryMatch ? categoryMatch[1] : '';
         
-        const link = linkMatch[1];
-        
-        // 提取标题
-        const titleMatch = articleHtml.match(/<h2[^>]*class="post-card-title[^>]*>([\s\S]*?)<\/h2>/);
-        if (!titleMatch) continue;
-        
-        // 清理标题中的HTML标签
-        let title = titleMatch[1].replace(/<[^>]+>/g, '').trim();
-        
-        // 提取图片
-        let pic = "";
-        const picMatch = articleHtml.match(/loadBannerDirect\('([^']+)'/);
-        if (picMatch) {
-            pic = picMatch[1];
-        } else {
-            const imgMatch = articleHtml.match(/<img[^>]*src="([^"]+)"[^>]*>/);
-            if (imgMatch) pic = imgMatch[1];
-        }
-        
-        // 提取备注（时间/分类）
-        let remarks = "";
-        const infoMatch = articleHtml.match(/<span[^>]*itemprop="datePublished"[^>]*>([^<]+)</);
-        if (infoMatch) remarks = infoMatch[1];
-        
-        items.push({
+        list.push({
             vod_id: link,
             vod_name: title,
             vod_pic: pic,
-            vod_remarks: remarks
+            vod_remarks: remark
         });
     }
     
+    // 获取总页数
+    const pageCountMatch = html.match(/<a href="\/page\/(\d+)\/">(\d+)<\/a>[^<]*<\/li>\s*<li class="btn btn-primary next"/);
+    const pageCount = pageCountMatch ? parseInt(pageCountMatch[2]) : 1;
+    
     return JSON.stringify({
-        page: 1,
-        pagecount: 1,
-        limit: items.length,
-        total: items.length,
-        list: items
+        page: page,
+        pagecount: pageCount,
+        list: list
     });
 }
 
-function extractFirstImage(html) {
-    const match = html.match(/loadBannerDirect\('([^']+)'/);
-    if (match) return match[1];
+/**
+ * 搜索函数 - 搜索视频
+ * @param {string} keyword 搜索关键词
+ * @param {number} page 页码
+ * @returns {string} JSON字符串，格式同首页
+ */
+function get51Search(keyword, page) {
+    const url = `https://d3an8gb8ri1qwv.cloudfront.net/page/${page}/?s=${encodeURIComponent(keyword)}`;
     
-    const imgMatch = html.match(/<img[^>]*src="([^"]+\.(jpe?g|png|gif))"[^>]*>/i);
-    return imgMatch ? imgMatch[1] : "";
-}
-
-function extractRemarks(html) {
-    const timeMatch = html.match(/<time[^>]*>([^<]+)</);
-    return timeMatch ? timeMatch[1] : "";
-}
-
-function extractContent(html) {
-    const contentMatch = html.match(/<div[^>]*class="post-content"[^>]*>([\s\S]*?)<\/div>\s*<div[^>]*class="(?:tags|copyright)/);
-    if (contentMatch) {
-        return contentMatch[1].replace(/<[^>]+>/g, '').substring(0, 200);
+    const html = fetch(url, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+    });
+    
+    const list = [];
+    
+    // 解析搜索结果
+    const articleRegex = /<article[\s\S]*?<a href="([^"]+)"[\s\S]*?<h2 class="post-card-title"[^>]*>([\s\S]*?)<\/h2>[\s\S]*?background-image[:\s]*url\(['"]?([^'")]+)['"]?\)/g;
+    let match;
+    while ((match = articleRegex.exec(html)) !== null) {
+        const link = match[1];
+        const title = match[2].replace(/<[^>]+>/g, '').trim();
+        const pic = match[3];
+        
+        list.push({
+            vod_id: link,
+            vod_name: title,
+            vod_pic: pic,
+            vod_remarks: '搜索结果'
+        });
     }
-    return "";
+    
+    // 获取总页数
+    const pageCountMatch = html.match(/<a href="\/page\/(\d+)\/">(\d+)<\/a>[^<]*<\/li>\s*<li class="btn btn-primary next"/);
+    const pageCount = pageCountMatch ? parseInt(pageCountMatch[2]) : 1;
+    
+    return JSON.stringify({
+        page: page,
+        pagecount: pageCount,
+        list: list
+    });
 }
 
-// 简单的fetch模拟（实际运行时由小猫影视提供）
-function fetch(url) {
-    // 这里只是占位，实际JS源运行时会有内置的fetch方法
-    return "";
+/**
+ * 详情函数 - 获取视频详情和播放地址
+ * @param {string} url 详情页URL，如 /archives/188279/
+ * @returns {string} JSON字符串，格式：{"vod_id":"ID","vod_name":"标题","vod_pic":"图片","vod_play_from":"来源","vod_play_url":"播放地址$集数"}
+ */
+function get51Detail(url) {
+    const fullUrl = `https://d3an8gb8ri1qwv.cloudfront.net${url}`;
+    
+    const html = fetch(fullUrl, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+    });
+    
+    // 提取标题
+    const titleMatch = html.match(/<h1[^>]*>([^<]+)<\/h1>/);
+    const title = titleMatch ? titleMatch[1] : '';
+    
+    // 提取图片
+    const picMatch = html.match(/background-image[:\s]*url\(['"]?([^'")]+)['"]?\)/);
+    const pic = picMatch ? picMatch[1] : '';
+    
+    // 提取视频地址 - 这需要根据实际页面结构调整
+    // 方案1：直接查找视频文件链接
+    let videoUrl = '';
+    
+    // 尝试匹配 video 标签
+    const videoTagMatch = html.match(/<video[^>]*>[\s\S]*?<source[^>]*src="([^"]+)"[^>]*>/i);
+    if (videoTagMatch) {
+        videoUrl = videoTagMatch[1];
+    }
+    
+    // 如果没有video标签，尝试匹配iframe
+    if (!videoUrl) {
+        const iframeMatch = html.match(/<iframe[^>]*src="([^"]+)"[^>]*>/i);
+        if (iframeMatch) {
+            videoUrl = iframeMatch[1];
+        }
+    }
+    
+    // 如果还是没找到，尝试匹配常见的视频链接格式
+    if (!videoUrl) {
+        const linkMatch = html.match(/https?:\/\/[^\s"']+\.(mp4|m3u8|flv)[^\s"']*/i);
+        if (linkMatch) {
+            videoUrl = linkMatch[0];
+        }
+    }
+    
+    // 构建播放链接字符串（格式：视频地址$集数）
+    // 这里因为没有分集，所以集数写"第1集"
+    const playUrl = videoUrl ? `${videoUrl}$第1集` : '';
+    
+    return JSON.stringify({
+        vod_id: url,
+        vod_name: title,
+        vod_pic: pic,
+        vod_play_from: '51视频',
+        vod_play_url: playUrl
+    });
 }
+
+// 导出函数（小猫影视要求）
+module.exports = {
+    get51Category,
+    get51Home,
+    get51Search,
+    get51Detail
+};
