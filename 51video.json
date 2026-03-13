@@ -1,0 +1,22 @@
+[
+  {
+    "id": "51shipin_js_v1",
+    "name": "51视频网(吃瓜爆料)",
+    "type": 1,
+    "api": "https://d3an8gb8ri1qwv.cloudfront.net/51video.js",
+    "logo": "https://51sptv.com/usr/themes/Mirages/images/51cg.png",
+    "desc": "全网热门吃瓜爆料视频，网红黑料、福利视频每日更新",
+    "nsfw": true,
+    "status": true,
+    "extra": {
+      "gfw": true,
+      "searchLimit": 10,
+      "js": {
+        "category": "get51Category",
+        "home": "get51Home",
+        "search": "get51Search",
+        "detail": "get51Detail"
+      }
+    }
+  }
+]
