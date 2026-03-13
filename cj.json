@@ -1,93 +1,152 @@
 [
   {
-    "id": "xingba_json",
-    "name": "杏吧资源",
+    "id": "xingba-cms",
+    "name": "杏吧",
     "type": 0,
-    "api": "https://json.xingba222.com/api.php/provide/vod",
     "logo": "",
-    "desc": "杏吧资源站 - 精品探花/网红",
+    "desc": "杏吧影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "https://json.xingba222.com/api.php/provide/vod/"
   },
   {
-    "id": "xingziyuan_json",
+    "id": "xingziyuan-cms",
     "name": "幸资源",
     "type": 0,
-    "api": "https://xzybb1.com/api.php/provide/vod",
     "logo": "",
-    "desc": "幸资源站",
+    "desc": "幸资源影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "https://xzybb1.com/api.php/provide/vod/"
   },
   {
-    "id": "huangse_cangku_json",
+    "id": "huangsecangku-cms",
     "name": "黄色仓库",
     "type": 0,
-    "api": "https://hsckzy888.com/api.php/provide/vod",
     "logo": "",
-    "desc": "黄色仓库资源",
+    "desc": "黄色仓库影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "https://hsckzy888.com/api.php/provide/vod"
   },
   {
-    "id": "xiaoji_json",
+    "id": "xiaoji-cms",
     "name": "小鸡资源",
     "type": 0,
-    "api": "https://api.xjzyapi.xyz/provide/vod",
     "logo": "",
-    "desc": "小鸡资源站 - 国产/日韩/欧美",
+    "desc": "小鸡资源影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "https://api.xjzyapi.xyz/provide/vod"
   },
   {
-    "id": "lebo_json",
+    "id": "semao-cms",
+    "name": "色猫资源",
+    "type": 0,
+    "logo": "",
+    "desc": "色猫资源影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://caiji.semaozy.net/inc/api.php"
+  },
+  {
+    "id": "lebo-cms",
     "name": "乐播资源",
     "type": 0,
-    "api": "http://lbapiby.com/api.php/provide/vod",
     "logo": "",
-    "desc": "乐播资源站（若无法使用请自行确认地址）",
+    "desc": "乐播资源影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "http://lbapiby.com/api.php/provide/vod"
   },
   {
-    "id": "jingdong_json",
-    "name": "精东资源",
+    "id": "jingdong-cms",
+    "name": "精东",
     "type": 0,
-    "api": "http://chujia.cc/api.php/provide/vod",
     "logo": "",
-    "desc": "精东资源 - 麻豆/中文字幕",
+    "desc": "精东影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 30
-    }
+    "api": "http://chujia.cc/api.php/provide/vod/"
   },
   {
-    "id": "lajiao_json",
-    "name": "辣椒资源",
+    "id": "lajiao-cms",
+    "name": "辣椒",
     "type": 0,
-    "api": "https://apilj.com/api.php/provide/vod",
     "logo": "",
-    "desc": "辣椒资源（需确认地址是否有效）",
+    "desc": "辣椒影视源",
     "nsfw": true,
     "status": true,
-    "extra": {
-      "searchLimit": 20
-    }
+    "api": "https://apilj.com/api.php/provide/vod"
+  },
+  {
+    "id": "shayu-cms",
+    "name": "鲨鱼",
+    "type": 0,
+    "logo": "",
+    "desc": "鲨鱼影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://shayuapi.com/api.php/provide/vod/"
+  },
+  {
+    "id": "naixiang-cms",
+    "name": "奶香",
+    "type": 0,
+    "logo": "",
+    "desc": "奶香影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://naixxzy.com/api.php/provide/vod"
+  },
+  {
+    "id": "aosi-cms",
+    "name": "奥斯",
+    "type": 0,
+    "logo": "",
+    "desc": "奥斯影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://aosikazy.com/api.php/provide/vod/"
+  },
+  {
+    "id": "91shipin-cms",
+    "name": "91视频",
+    "type": 0,
+    "logo": "",
+    "desc": "91视频影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://91av.cyou/api.php/provide/vod"
+  },
+  {
+    "id": "senlin-cms",
+    "name": "森林",
+    "type": 0,
+    "logo": "",
+    "desc": "森林影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://slapibf.com/api.php/provide/vod"
+  },
+  {
+    "id": "yutu-cms",
+    "name": "玉兔",
+    "type": 0,
+    "logo": "",
+    "desc": "玉兔影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "https://apiyutu.com/api.php/provide/vod"
+  },
+  {
+    "id": "fanhao-cms",
+    "name": "番号",
+    "type": 0,
+    "logo": "",
+    "desc": "番号影视源",
+    "nsfw": true,
+    "status": true,
+    "api": "http://fhapi9.com/api.php/provide/vod"
   }
 ]
