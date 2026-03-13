@@ -1,0 +1,229 @@
+[
+  {
+    "id": "madou_net",
+    "name": "麻豆传媒",
+    "api": "https://madou.net",
+    "nsfw": true,
+    "type": 1,
+    "extra": {
+      "gfw": true,
+      "searchLimit": 20,
+      "js": {
+        "category": [
+          {
+            "text": "首页",
+            "id": "/"
+          },
+          {
+            "text": "新片更新",
+            "id": "/category/17202/"
+          },
+          {
+            "text": "吃瓜黑料",
+            "id": "/category/183010112/"
+          },
+          {
+            "text": "热门大瓜",
+            "id": "/category/183010109/"
+          },
+          {
+            "text": "明星网红",
+            "id": "/category/183010110/"
+          },
+          {
+            "text": "校园吃瓜",
+            "id": "/category/183010111/"
+          },
+          {
+            "text": "麻豆AV",
+            "id": "/category/17210101/"
+          },
+          {
+            "text": "精选好片",
+            "id": "/category/17210101/"
+          },
+          {
+            "text": "经典改编",
+            "id": "/category/17010102/"
+          },
+          {
+            "text": "多人系列",
+            "id": "/category/17210102/"
+          },
+          {
+            "text": "麻豆子团队",
+            "id": "/category/17310101/"
+          },
+          {
+            "text": "女优试镜",
+            "id": "/category/17010101/"
+          },
+          {
+            "text": "片商传媒",
+            "id": "/category/183010120/"
+          },
+          {
+            "text": "爱豆传媒",
+            "id": "/category/183010120/"
+          },
+          {
+            "text": "皇家华人",
+            "id": "/category/183010119/"
+          },
+          {
+            "text": "蜜桃影像",
+            "id": "/category/183010121/"
+          },
+          {
+            "text": "星空传媒",
+            "id": "/category/183010122/"
+          },
+          {
+            "text": "色控Psychoporn",
+            "id": "/category/183010124/"
+          },
+          {
+            "text": "果冻传媒",
+            "id": "/category/183010129/"
+          },
+          {
+            "text": "兔子先生",
+            "id": "/category/183010138/"
+          },
+          {
+            "text": "糖心Vlog",
+            "id": "/category/183010141/"
+          },
+          {
+            "text": "天美传媒",
+            "id": "/category/183010140/"
+          },
+          {
+            "text": "热门女优",
+            "id": "/category/52310101/"
+          },
+          {
+            "text": "顶流网黄",
+            "id": "/category/183010102/"
+          },
+          {
+            "text": "台北娜娜",
+            "id": "/category/183010102/"
+          },
+          {
+            "text": "情深叉喔",
+            "id": "/category/183010107/"
+          },
+          {
+            "text": "饼干姐姐",
+            "id": "/category/183010105/"
+          },
+          {
+            "text": "桥本香菜",
+            "id": "/category/183010108/"
+          },
+          {
+            "text": "玩偶姐姐",
+            "id": "/category/183010103/"
+          },
+          {
+            "text": "约炮大神",
+            "id": "/category/183010104/"
+          },
+          {
+            "text": "推特网黄",
+            "id": "/category/183010113/"
+          },
+          {
+            "text": "福利姬COS",
+            "id": "/category/183010114/"
+          },
+          {
+            "text": "国产精品",
+            "id": "/category/183010106/"
+          },
+          {
+            "text": "真实乱伦",
+            "id": "/category/183010106/"
+          },
+          {
+            "text": "探花偷拍",
+            "id": "/category/183010115/"
+          },
+          {
+            "text": "绿帽淫妻",
+            "id": "/category/183010116/"
+          },
+          {
+            "text": "SM调教",
+            "id": "/category/183010139/"
+          },
+          {
+            "text": "原创大神精选",
+            "id": "/category/183010142/"
+          },
+          {
+            "text": "日本AV",
+            "id": "/category/183010131/"
+          },
+          {
+            "text": "禁忌乱伦",
+            "id": "/category/183010131/"
+          },
+          {
+            "text": "人妻少妇",
+            "id": "/category/183010128/"
+          },
+          {
+            "text": "巨乳风情",
+            "id": "/category/183010126/"
+          },
+          {
+            "text": "黑丝制服",
+            "id": "/category/183010130/"
+          },
+          {
+            "text": "无码AV",
+            "id": "/category/183010125/"
+          },
+          {
+            "text": "FC2约炮素人",
+            "id": "/category/183010127/"
+          },
+          {
+            "text": "欧美AV",
+            "id": "/category/183010133/"
+          },
+          {
+            "text": "中文字幕",
+            "id": "/category/183010133/"
+          },
+          {
+            "text": "捷克搭讪",
+            "id": "/category/183010135/"
+          },
+          {
+            "text": "黑白配",
+            "id": "/category/183010134/"
+          },
+          {
+            "text": "欧美网黄",
+            "id": "/category/183010136/"
+          },
+          {
+            "text": "经典AV",
+            "id": "/category/183010137/"
+          },
+          {
+            "text": "情趣综艺",
+            "id": "/category/109910101/"
+          }
+        ],
+        "home": "const cate=env.get(\"category\");const page=env.get(\"page\");if(cate==\"/\"){const url=env.baseUrl;const $=utils_1.kitty.load(await(0,utils_1.req)(url));const items=[];$(\".videoList .newVideoBox\").each(function(){const a=$(this).closest(\"a\");const id=a.attr(\"href\")??\"\";if(!id)return;const cover=$(this).find(\".videoCover\").attr(\"data-src\")??\"\";const title=$(this).find(\".videoTitle\").text().trim();items.push({id,cover,title,remark:\"\"});});return items;}const url=`${env.baseUrl}${cate}${page>1?page:''}`;const $=utils_1.kitty.load(await(0,utils_1.req)(url));const items=[];$(\".videoList .newVideoBox\").each(function(){const a=$(this).closest(\"a\");const id=a.attr(\"href\")??\"\";if(!id)return;const cover=$(this).find(\".videoCover\").attr(\"data-src\")??\"\";const title=$(this).find(\".videoTitle\").text().trim();items.push({id,cover,title,remark:\"\"});});return items;",
+        "detail": "const id=env.get(\"movieId\");const url=`${env.baseUrl}${id}`;const $=utils_1.kitty.load(await(0,utils_1.req)(url));const title=$(\".header .title\").text().trim()||$(\"h1.title\").text().trim();const cover=$(\"meta[property='og:image']\").attr(\"content\")??\"\";const desc=$(\"meta[property='og:description']\").attr(\"content\")??\"\";let videos=[];const dplayer=$(\"#dplayer\");if(dplayer.length>0){const videoUrl=dplayer.attr(\"data-url\");if(videoUrl){let fullUrl=videoUrl;if(!fullUrl.startsWith(\"http\")){const cdn=\"https://eb290dc3835b2d77.cdn.jiashule.com/\";fullUrl=cdn+fullUrl;}videos.push({text:\"播放\",url:fullUrl});}}return{id,title,cover,desc,playlist:[{title:\"默认\",videos}]};",
+        "search": "const wd=env.get(\"keyword\");const page=env.get(\"page\");const url=`${env.baseUrl}/search/${encodeURIComponent(wd)}/page/${page}/`;try{const $=utils_1.kitty.load(await(0,utils_1.req)(url));const items=[];$(\".videoList .newVideoBox\").each(function(){const a=$(this).closest(\"a\");const id=a.attr(\"href\")??\"\";if(!id)return;const cover=$(this).find(\".videoCover\").attr(\"data-src\")??\"\";const title=$(this).find(\".videoTitle\").text().trim();items.push({id,cover,title,remark:\"\"});});return items;}catch(e){return[]}",
+        "parseIframe": "const iframe=env.get(\"iframe\");const $=utils_1.kitty.load(await(0,utils_1.req)(`${env.baseUrl}${iframe}`));const dplayer=$(\"#dplayer\");if(dplayer.length>0){const videoUrl=dplayer.attr(\"data-url\");if(videoUrl){let fullUrl=videoUrl;if(!fullUrl.startsWith(\"http\")){const cdn=\"https://eb290dc3835b2d77.cdn.jiashule.com/\";fullUrl=cdn+fullUrl;}return fullUrl;}}return utils_1.kitty.utils.getM3u8WithIframe(env);"
+      }
+    }
+  }
+]
