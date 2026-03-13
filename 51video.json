@@ -1,21 +1,27 @@
 [
   {
-    "id": "51shipin_js_v1",
-    "name": "51视频网(吃瓜爆料)",
+    "id": "51shipin_official_202603",
+    "name": "51视频 - 吃瓜爆料",
     "type": 1,
-    "api": "https://d3an8gb8ri1qwv.cloudfront.net/51video.js",
+    "api": "https://d3an8gb8ri1qwv.cloudfront.net",
     "logo": "https://51sptv.com/usr/themes/Mirages/images/51cg.png",
-    "desc": "全网热门吃瓜爆料视频，网红黑料、福利视频每日更新",
+    "desc": "全网最新吃瓜爆料与福利视频，每日更新网红黑料、社会猛料。包含：吃瓜爆料、网红黑料、伦理精选、学生校园等分类。",
     "nsfw": true,
     "status": true,
     "extra": {
       "gfw": true,
       "searchLimit": 10,
       "js": {
-        "category": "get51Category",
-        "home": "get51Home",
-        "search": "get51Search",
-        "detail": "get51Detail"
+        "category": "getCategory",
+        "home": "getHome",
+        "search": "getSearch",
+        "detail": "getDetail",
+        "parseIframe": "parseIframe"
+      },
+      "sniffer": {
+        "mode": 0,
+        "timeout": 15000,
+        "exclude": "ad|banner|popup|gg|guanggao"
       }
     }
   }
