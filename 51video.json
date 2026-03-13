@@ -1,22 +1,29 @@
-[
-  {
-    "id": "51shipin_fixed_v1",
-    "name": "51视频 - 吃瓜爆料",
-    "type": 1,
-    "api": "https://d3an8gb8ri1qwv.cloudfront.net",
-    "logo": "https://51sptv.com/usr/themes/Mirages/images/51cg.png",
-    "desc": "全网最新吃瓜爆料与福利视频",
-    "nsfw": true,
-    "status": true,
-    "extra": {
-      "gfw": true,
-      "searchLimit": 20,
-      "js": {
-        "category": "async function getCategory(){return[{id:'wpcz',text:'今日推荐'},{id:'lpjp',text:'撸片精品'},{id:'meiridasai',text:'每日大赛'},{id:'rdsj',text:'吃瓜爆料'},{id:'lljx',text:'伦理精选'},{id:'xsxy',text:'学生校园'},{id:'tynd',text:'体育男大'},{id:'smtt',text:'色漫天堂'},{id:'whhl',text:'网红黑料'},{id:'ysyl',text:'看片娱乐'},{id:'cqdb',text:'超前点播'},{id:'qubk',text:'奇趣百科'},{id:'51yc',text:'51原创'},{id:'dyds',text:'短剧影视'}]}",
-        "home": "async function getHome(p){p=p||1;try{let u=p==1?'https://d3an8gb8ri1qwv.cloudfront.net/':'https://d3an8gb8ri1qwv.cloudfront.net/page/'+p+'/';let r=await fetch(u,{headers:{'User-Agent':'Mozilla/5.0'}});let h=await r.text();let l=[];let a=/<article[\\s\\S]*?<a\\s+href=\"([^\"]+)\"[\\s\\S]*?<h2[^>]*class=\"post-card-title\"[^>]*>([\\s\\S]*?)<\\/h2>[\\s\\S]*?(?:background-image:\\s*url\\(['\"]?([^'\"]+)|<img[^>]*src=\"([^\"]+)\")[\\s\\S]*?<\\/article>/g;let m;while((m=a.exec(h))!==null){let i=m[1];let t=m[2].replace(/<[^>]*>/g,'').trim();let c=m[3]||m[4]||'https://51sptv.com/usr/themes/Mirages/images/51cg.png';if(t&&i&&!t.includes('广告')){l.push({vod_id:i,vod_name:t,vod_pic:c,vod_remarks:'吃瓜爆料',vod_play_from:'51视频'})}}return{page:p,pagecount:1232,list:l}}catch(e){return{page:p,pagecount:1,list:[]}}}",
-        "detail": "async function getDetail(i){try{let b='https://d3an8gb8ri1qwv.cloudfront.net';let u=i.startsWith('http')?i:b+i;let r=await fetch(u,{headers:{'User-Agent':'Mozilla/5.0'}});let h=await r.text();let t='';let x=h.match(/<h1[^>]*class=\"post-title\"[^>]*>([\\s\\S]*?)<\\/h1>/)||h.match(/<h2[^>]*class=\"post-card-title\"[^>]*>([\\s\\S]*?)<\\/h2>/);if(x)t=x[1].replace(/<[^>]*>/g,'').trim();let p='';let y=h.match(/<meta[^>]*property=\"og:image\"[^>]*content=\"([^\"]+)\"/);if(y)p=y[1];let v='';let d=h.match(/data-config='([\\s\\S]*?)'\\s*>/);if(d){try{let c=JSON.parse(d[1].replace(/&quot;/g,'\"'));if(c.video&&c.video.url)v=c.video.url}catch(e){}}if(!v){let a=h.match(/(https?:\\/\\/[^\"'\\s]+\\.(?:m3u8|mp4|flv)[^\"'\\s]*)/gi);if(a)v=a[0]}let l=v?'在线播放$'+v:'在线播放$'+u;return{vod_id:i,vod_name:t||'51视频',vod_pic:p||'https://51sptv.com/usr/themes/Mirages/images/51cg.png',vod_remarks:'点击播放',vod_play_from:'51视频',vod_play_url:l,vod_content:'热门吃瓜爆料视频'}}catch(e){return{vod_id:i,vod_name:'51视频',vod_pic:'https://51sptv.com/usr/themes/Mirages/images/51cg.png',vod_remarks:'加载失败',vod_play_from:'51视频',vod_play_url:'在线播放$'+i,vod_content:'加载失败'}}}",
-        "search": "async function getSearch(k,p){p=p||1;try{let e=encodeURIComponent(k);let u=p==1?'https://d3an8gb8ri1qwv.cloudfront.net/?s='+e:'https://d3an8gb8ri1qwv.cloudfront.net/page/'+p+'/?s='+e;let r=await fetch(u,{headers:{'User-Agent':'Mozilla/5.0'}});let h=await r.text();let l=[];let a=/<article[\\s\\S]*?<a\\s+href=\"([^\"]+)\"[\\s\\S]*?<h2[^>]*class=\"post-card-title\"[^>]*>([\\s\\S]*?)<\\/h2>[\\s\\S]*?(?:background-image:\\s*url\\(['\"]?([^'\"]+)|<img[^>]*src=\"([^\"]+)\")[\\s\\S]*?<\\/article>/g;let m;while((m=a.exec(h))!==null){let i=m[1];let t=m[2].replace(/<[^>]*>/g,'').trim();let c=m[3]||m[4]||'https://51sptv.com/usr/themes/Mirages/images/51cg.png';if(t&&i){l.push({vod_id:i,vod_name:t,vod_pic:c,vod_remarks:'搜索结果',vod_play_from:'51视频'})}}return{page:p,pagecount:1,list:l}}catch(e){return{page:p,pagecount:1,list:[]}}}"
+{
+  "sites": [
+    {
+      "id": "51sptv_integrated",
+      "name": "51视频(直连源)",
+      "type": 1,
+      "api": "https://51sptv.com/",
+      "logo": "https://51sptv.com/usr/themes/Mirages/images/51cg.png",
+      "desc": "全网吃瓜爆料，自动嗅探播放",
+      "nsfw": true,
+      "status": true,
+      "extra": {
+        "searchLimit": 10,
+        "js": {
+          "category": "[{\"text\":\"最新发布\",\"id\":\"/\"},{\"text\":\"网红黑料\",\"id\":\"/category/whhl/\"},{\"text\":\"吃瓜视频\",\"id\":\"/category/cgsp/\"},{\"text\":\"社会猛料\",\"id\":\"/category/shml/\"}]",
+          "home": "async (page, categoryId) => { const url = categoryId === '/' ? `https://51sptv.com/page/${page}/` : `https://51sptv.com${categoryId}page/${page}/`; const resp = await fetch(url); const html = await resp.text(); const items = []; const regex = /<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs; let match; while ((match = regex.exec(html)) !== null) { items.push({ id: match[1], title: match[2], cover: match[3], remark: '点击播放' }); } return items; }",
+          "search": "async (keyword, page) => { const url = `https://51sptv.com/search/${encodeURIComponent(keyword)}/${page}/`; const resp = await fetch(url); const html = await resp.text(); const items = []; const regex = /<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs; let match; while ((match = regex.exec(html)) !== null) { items.push({ id: match[1], title: match[2], cover: match[3] }); } return items; }",
+          "detail": "async (id) => { const resp = await fetch(id); const html = await resp.text(); const descMatch = html.match(/<meta name=\"description\" content=\"(.*?)\"/); return { id: id, title: '视频播放', desc: descMatch ? descMatch[1] : '', playlist: [{ text: '播放线路', urls: [{ text: '正片', id: id }] }] }; }"
+        },
+        "sniffer": {
+          "mode": 0,
+          "timeout": 10000,
+          "customRegex": "https?://.*\\.(m3u8|mp4|flv|ts)",
+          "script": "document.querySelector('video')?.play();"
+        }
       }
     }
-  }
-]
+  ]
+}
