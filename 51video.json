@@ -1,29 +1,23 @@
-{
-  "sites": [
-    {
-      "id": "51sptv_integrated",
-      "name": "51视频(直连源)",
-      "type": 1,
-      "api": "https://51sptv.com/",
-      "logo": "https://51sptv.com/usr/themes/Mirages/images/51cg.png",
-      "desc": "全网吃瓜爆料，自动嗅探播放",
-      "nsfw": true,
-      "status": true,
-      "extra": {
-        "searchLimit": 10,
-        "js": {
-          "category": "[{\"text\":\"最新发布\",\"id\":\"/\"},{\"text\":\"网红黑料\",\"id\":\"/category/whhl/\"},{\"text\":\"吃瓜视频\",\"id\":\"/category/cgsp/\"},{\"text\":\"社会猛料\",\"id\":\"/category/shml/\"}]",
-          "home": "async (page, categoryId) => { const url = categoryId === '/' ? `https://51sptv.com/page/${page}/` : `https://51sptv.com${categoryId}page/${page}/`; const resp = await fetch(url); const html = await resp.text(); const items = []; const regex = /<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs; let match; while ((match = regex.exec(html)) !== null) { items.push({ id: match[1], title: match[2], cover: match[3], remark: '点击播放' }); } return items; }",
-          "search": "async (keyword, page) => { const url = `https://51sptv.com/search/${encodeURIComponent(keyword)}/${page}/`; const resp = await fetch(url); const html = await resp.text(); const items = []; const regex = /<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs; let match; while ((match = regex.exec(html)) !== null) { items.push({ id: match[1], title: match[2], cover: match[3] }); } return items; }",
-          "detail": "async (id) => { const resp = await fetch(id); const html = await resp.text(); const descMatch = html.match(/<meta name=\"description\" content=\"(.*?)\"/); return { id: id, title: '视频播放', desc: descMatch ? descMatch[1] : '', playlist: [{ text: '播放线路', urls: [{ text: '正片', id: id }] }] }; }"
-        },
-        "sniffer": {
-          "mode": 0,
-          "timeout": 10000,
-          "customRegex": "https?://.*\\.(m3u8|mp4|flv|ts)",
-          "script": "document.querySelector('video')?.play();"
-        }
+[
+  {
+    "id": "51sptv_v1",
+    "name": "51视频(精简版)",
+    "type": 1,
+    "api": "https://51sptv.com/",
+    "status": true,
+    "nsfw": true,
+    "extra": {
+      "js": {
+        "category": "[{\"text\":\"最新发布\",\"id\":\"/\"},{\"text\":\"网红黑料\",\"id\":\"/category/whhl/\"},{\"text\":\"吃瓜视频\",\"id\":\"/category/cgsp/\"}]",
+        "home": "async(p,c)=>{const u=c==='/'?`https://51sptv.com/page/${p}/`:`https://51sptv.com${c}page/${p}/`;const r=await fetch(u);const h=await r.text();const i=[];const g=/<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs;let m;while((m=g.exec(h))!==null){i.push({id:m[1],title:m[2],cover:m[3],remark:'点击播放'})}return i}",
+        "search": "async(k,p)=>{const u=`https://51sptv.com/search/${encodeURIComponent(k)}/${p}/`;const r=await fetch(u);const h=await r.text();const i=[];const g=/<article.*?href=\"(.*?)\".*?title=\"(.*?)\".*?data-src=\"(.*?)\".*?<\\/article>/gs;let m;while((m=g.exec(h))!==null){i.push({id:m[1],title:m[2],cover:m[3]})}return i}",
+        "detail": "async(id)=>{const r=await fetch(id);const h=await r.text();return{id:id,title:'视频播放',playlist:[{text:'线路',urls:[{text:'正片',id:id}]}]}}"
+      },
+      "sniffer": {
+        "mode": 0,
+        "timeout": 10000,
+        "customRegex": "\\.(m3u8|mp4|flv|ts)"
       }
     }
-  ]
-}
+  }
+]
