@@ -1,0 +1,32 @@
+{
+  "name": "dongkadi",
+  "version": 1,
+  "webSite": "https://dongkadi.com",
+  "author": "yida",
+  "order": "C",
+  "host": "dongkadi.com",
+  "url": "https://dongkadi.com/",
+  "isUsePC": 1,
+  "isUseWebView": false,
+  "isAddReferer": 0,
+  "searchUrl": "https://dongkadi.com/sousuo.html?keyword=@{searchWord}",
+  "classUrl": "https://dongkadi.com/sortlist/@{classId}.html",
+  "homeUrl": "https://dongkadi.com/",
+  "detailUrl": "https://dongkadi.com/flim/@{id}/index.html",
+  "playUrl": "https://dongkadi.com/flim/@{id}/index.html",
+  "firstClass": [
+    {"name": "国产视频", "id": "9858"},
+    {"name": "日产视频", "id": "9859"},
+    {"name": "欧美视频", "id": "9860"},
+    {"name": "动漫视频", "id": "9861"},
+    {"name": "制服人类", "id": "9862"},
+    {"name": "自拍自售", "id": "9863"},
+    {"name": "群交颜射", "id": "9864"},
+    {"name": "写真诱惑", "id": "9865"}
+  ],
+  "search": "function search(result) {\n    var list = [];\n    var html = result.html;\n    var pattern = /<a class=\"stui-vodlist__thumb\"[^>]*href=\"([^\"]+)\"[^>]*title=\"([^\"]+)\"[^>]*data-original=\"([^\"]+)\"/g;\n    var match;\n    while ((match = pattern.exec(html)) !== null) {\n        var href = match[1];\n        var title = match[2];\n        var pic = match[3];\n        var idMatch = href.match(/\\/flim\\/(\\d+)\\//);\n        if (idMatch) {\n            list.push({\n                name: title,\n                url: 'https://dongkadi.com/flim/' + idMatch[1] + '/index.html',\n                pic: pic\n            });\n        }\n    }\n    return JSON.stringify(list);\n}",
+  "category": "function category(result) {\n    var list = [];\n    var classData = [\n        {\"name\": \"国产视频\", \"id\": \"9858\"},\n        {\"name\": \"日产视频\", \"id\": \"9859\"},\n        {\"name\": \"欧美视频\", \"id\": \"9860\"},\n        {\"name\": \"动漫视频\", \"id\": \"9861\"},\n        {\"name\": \"制服人类\", \"id\": \"9862\"},\n        {\"name\": \"自拍自售\", \"id\": \"9863\"},\n        {\"name\": \"群交颜射\", \"id\": \"9864\"},\n        {\"name\": \"写真诱惑\", \"id\": \"9865\"}\n    ];\n    for (var i = 0; i < classData.length; i++) {\n        list.push({\n            name: classData[i].name,\n            path: '/sortlist/' + classData[i].id + '.html'\n        });\n    }\n    return JSON.stringify(list);\n}",
+  "home": "function home(result) {\n    var list = [];\n    var html = result.html;\n    var pattern = /<a class=\"stui-vodlist__thumb\"[^>]*href=\"([^\"]+)\"[^>]*title=\"([^\"]+)\"[^>]*data-original=\"([^\"]+)\"/g;\n    var match;\n    while ((match = pattern.exec(html)) !== null) {\n        var href = match[1];\n        var title = match[2];\n        var pic = match[3];\n        var idMatch = href.match(/\\/flim\\/(\\d+)\\//);\n        if (idMatch) {\n            list.push({\n                name: title,\n                url: 'https://dongkadi.com/flim/' + idMatch[1] + '/index.html',\n                pic: pic\n            });\n        }\n    }\n    return JSON.stringify(list);\n}",
+  "detail": "function detail(result) {\n    var html = result.html;\n    var id = result.id;\n    var titleMatch = html.match(/<title>([^<]+)<\\/title>/);\n    var title = titleMatch ? titleMatch[1] : '视频 ' + id;\n    var picMatch = html.match(/data-original=\"([^\"]+)\"/);\n    var pic = picMatch ? picMatch[1] : '';\n    var descMatch = html.match(/<span class=\"detail-sketch\"[^>]*>([^<]+)<\\/span>/);\n    var desc = descMatch ? descMatch[1] : '';\n    var playList = [];\n    var playPattern = /<a[^>]*href=\"([^\"]+)\"[^>]*class=\"[^\"]*btn[^\"]*\"[^>]*>([^<]+)<\\/a>/gi;\n    var playMatch;\n    while ((playMatch = playPattern.exec(html)) !== null) {\n        var href = playMatch[1];\n        var name = playMatch[2].trim();\n        if (href.includes('flim') || href.includes('player') || href.includes('iframe')) {\n            playList.push({\n                name: name || '播放',\n                url: href.startsWith('http') ? href : 'https://dongkadi.com' + href\n            });\n        }\n    }\n    if (playList.length === 0) {\n        var iframeMatch = html.match(/<iframe[^>]+src=[\"']([^\"']+)[\"']/i);\n        if (iframeMatch) {\n            playList.push({\n                name: '播放',\n                url: iframeMatch[1]\n            });\n        }\n    }\n    var detailResult = {\n        name: title,\n        pic: pic,\n        desc: desc,\n        list: playList\n    };\n    return JSON.stringify(detailResult);\n}",
+  "play": "function play(result) {\n    var html = result.html;\n    var url = result.url;\n    var videoMatch = html.match(/<video[^>]+src=[\"']([^\"']+)[\"']/i);\n    if (videoMatch) {\n        return videoMatch[1];\n    }\n    var m3u8Match = html.match(/(https?:\\/\\/[^\\s\"'<>]+\\.m3u8[^\\s\"'<>]*)/i);\n    if (m3u8Match) {\n        return m3u8Match[1];\n    }\n    var iframeMatch = html.match(/<iframe[^>]+src=[\"']([^\"']+)[\"']/i);\n    if (iframeMatch) {\n        return '$iframe$' + iframeMatch[1];\n    }\n    return url;\n}"
+}
