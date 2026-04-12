@@ -22,19 +22,21 @@ class kkys01Class extends WebApiBase {
             let proData = pro.data
             if (proData) {
                 let document = parse(proData)
+                // 正确的选择器：.nav-swiper-slide
                 let allClass = document.querySelectorAll('.nav-swiper-slide')
                 let list = []
                 for (let index = 0; index < allClass.length; index++) {
                     const element = allClass[index]
-                    let type_name = element.querySelector('a')?.text?.trim() || ''
-                    let url = element.querySelector('a')?.attributes['href'] || ''
+                    let type_name = element.querySelector('.nav-item-label')?.text?.trim() || ''
+                    let url = element.querySelector('.nav-item')?.attributes['href'] || ''
                     if (this.isIgnoreClassName(type_name)) continue
-                    let match = url.match(/\/(\w+)\.html/)
+                    // 提取分类ID: /channel/1.html -> 1
+                    let match = url.match(/\/channel\/(\d+)\.html/)
                     if (match) {
                         let videoClass = new VideoClass()
                         videoClass.type_id = match[1]
                         videoClass.type_name = type_name
-                        videoClass.hasSubclass = true
+                        videoClass.hasSubclass = false
                         list.push(videoClass)
                     }
                 }
@@ -52,21 +54,27 @@ class kkys01Class extends WebApiBase {
             await this.initCookie()
             let page = args.page || 1
             let typeId = args.url || '1'
-            let listUrl = `${this.webSite}/show/${typeId}-----------${page}.html`
+            let listUrl = `${this.webSite}/channel/${typeId}.html`
+            
             let pro = await req(listUrl, { headers: this.headers })
             backData.error = pro.error
             let proData = pro.data
+            
             if (proData) {
                 let document = parse(proData)
                 let allVideo = document.querySelectorAll('.module-item')
                 let videos = []
                 for (let index = 0; index < allVideo.length; index++) {
                     const element = allVideo[index]
-                    let vodUrl = element.querySelector('a')?.attributes['href'] || ''
-                    let vodPic = element.querySelector('img')?.attributes['data-original'] || ''
+                    let vodUrl = element.querySelector('a.v-item')?.attributes['href'] || ''
+                    // 获取第二张图片（第一张是占位图）
+                    let imgElements = element.querySelectorAll('img.lazyload')
+                    let vodPic = imgElements.length > 1 ? imgElements[1].attributes['data-original'] || imgElements[1].attributes['src'] || '' : ''
                     let vodName = element.querySelector('.v-item-title')?.text?.trim() || ''
-                    let vodDiJiJi = element.querySelector('span')?.lastChild?.text?.trim() || ''
+                    let vodDiJiJi = element.querySelector('.v-item-bottom span')?.text?.trim() || ''
+                    
                     vodUrl = this.combineUrl(vodUrl)
+                    
                     let videoDet = new VideoDetail()
                     videoDet.vod_id = vodUrl
                     videoDet.vod_pic = this.getFullImgUrl(vodPic)
@@ -89,29 +97,23 @@ class kkys01Class extends WebApiBase {
             let pro = await req(webUrl, { headers: this.headers })
             backData.error = pro.error
             let proData = pro.data
+            
             if (proData) {
                 let document = parse(proData)
-                let vod_name = document.querySelector('.detail-title strong')?.text?.trim() || ''
+                
+                let vod_name = document.querySelector('.detail-title')?.text?.trim() || ''
                 let vod_pic = document.querySelector('.detail-pic img')?.attributes['data-original'] || ''
                 let vod_content = document.querySelector('.detail-desc')?.text?.trim() || ''
-                let descList = document.querySelectorAll('.detail-info-row-main')
-                let vod_year = '', vod_area = '', vod_lang = '', type_name = ''
-                for (let item of descList) {
-                    let text = item.text?.trim() || ''
-                    if (text.includes('年份') || /\d{4}/.test(text)) {
-                        vod_year = text.match(/\d{4}/)?.[0] || ''
-                    } else if (text.includes('地区')) {
-                        vod_area = text.replace('地区', '').trim()
-                    } else if (text.includes('语言')) {
-                        vod_lang = text.replace('语言', '').trim()
-                    }
-                }
+                
+                // 获取播放源和集数
                 let playList = document.querySelectorAll('.source-item')
                 let juJiList = document.querySelectorAll('.episode-list')
+                
                 let vod_play_from = ''
                 let vod_play_url = ''
+                
                 for (let i = 0; i < playList.length; i++) {
-                    let from = playList[i].querySelector('span')?.lastChild?.text?.trim() || `线路${i+1}`
+                    let from = playList[i].querySelector('.source-title')?.text?.trim() || `线路${i+1}`
                     let episodes = juJiList[i]?.querySelectorAll('a') || []
                     for (let ep of episodes) {
                         let epName = ep.text?.trim() || ''
@@ -121,17 +123,15 @@ class kkys01Class extends WebApiBase {
                     vod_play_url += '$$$'
                     vod_play_from += `${from}$$$`
                 }
+                
                 let detModel = new VideoDetail()
                 detModel.vod_name = vod_name
                 detModel.vod_pic = this.getFullImgUrl(vod_pic)
                 detModel.vod_content = vod_content
-                detModel.vod_year = vod_year
-                detModel.vod_area = vod_area
-                detModel.vod_lang = vod_lang
-                detModel.type_name = type_name
                 detModel.vod_play_from = vod_play_from.slice(0, -3)
                 detModel.vod_play_url = vod_play_url.slice(0, -3)
                 detModel.vod_id = webUrl
+                
                 backData.data = detModel
             }
         } catch (error) {
@@ -147,8 +147,10 @@ class kkys01Class extends WebApiBase {
             let pro = await req(reqUrl, { headers: this.headers })
             backData.error = pro.error
             let proData = pro.data
+            
             if (proData) {
                 let url = ''
+                
                 if (/dujia/.test(proData)) {
                     let encrypted = proData.split("PPPP = '")[1]?.split("';")[0] || ''
                     if (encrypted) {
@@ -164,6 +166,7 @@ class kkys01Class extends WebApiBase {
                     let match = proData.match(/src:\s*["']([^"']+)["']/)
                     if (match) url = match[1]
                 }
+                
                 backData.data = url
                 backData.headers = {
                     'Referer': this.webSite + '/',
@@ -180,25 +183,22 @@ class kkys01Class extends WebApiBase {
         let backData = new RepVideoList()
         try {
             await this.initCookie()
-            let homePage = await req(this.webSite, { headers: this.headers })
-            let tValue = ''
-            if (homePage.data) {
-                let match = homePage.data.match(/name="t"[^>]*value="([^"]*)"/i)
-                if (match) tValue = encodeURIComponent(match[1])
-            }
-            let searchUrl = `${this.webSite}/search?k=${encodeURIComponent(args.searchWord)}&page=${args.page || 1}&t=${tValue}`
+            let searchUrl = `${this.webSite}/search?k=${encodeURIComponent(args.searchWord)}&page=${args.page || 1}`
             let pro = await req(searchUrl, { headers: this.headers })
             backData.error = pro.error
             let proData = pro.data
+            
             if (proData) {
                 let document = parse(proData)
-                let allVideo = document.querySelectorAll('.search-result-item')
+                let allVideo = document.querySelectorAll('.module-item')
                 let videos = []
                 for (let element of allVideo) {
-                    let vodUrl = element.querySelector('a')?.attributes['href'] || ''
-                    let vodPic = element.querySelector('img')?.attributes['data-original'] || ''
-                    let vodName = element.querySelector('img')?.attributes['alt'] || ''
-                    let vodDiJiJi = element.querySelector('.search-result-item-header')?.text?.trim() || ''
+                    let vodUrl = element.querySelector('a.v-item')?.attributes['href'] || ''
+                    let imgElements = element.querySelectorAll('img.lazyload')
+                    let vodPic = imgElements.length > 1 ? imgElements[1].attributes['data-original'] || '' : ''
+                    let vodName = element.querySelector('.v-item-title')?.text?.trim() || ''
+                    let vodDiJiJi = element.querySelector('.v-item-bottom span')?.text?.trim() || ''
+                    
                     let videoDet = new VideoDetail()
                     videoDet.vod_id = this.combineUrl(vodUrl)
                     videoDet.vod_pic = this.getFullImgUrl(vodPic)
@@ -255,7 +255,7 @@ class kkys01Class extends WebApiBase {
     }
 
     isIgnoreClassName(className) {
-        let ignoreList = ['Netflix', '今日更新', '专题列表', '排行榜', '首页']
+        let ignoreList = ['Netflix', '今日更新', '专题列表', '排行榜', '首页', '留言求片', 'APP', '回家地址']
         return ignoreList.some(item => className.includes(item))
     }
 }
