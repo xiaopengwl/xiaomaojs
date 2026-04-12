@@ -22,7 +22,7 @@ class kkys01Class extends WebApiBase {
             let proData = pro.data
             if (proData) {
                 let document = parse(proData)
-                let allClass = document.querySelectorAll('#nav-swiper&&.nav-swiper-slide')
+                let allClass = document.querySelectorAll('.nav-swiper-slide')
                 let list = []
                 for (let index = 0; index < allClass.length; index++) {
                     const element = allClass[index]
@@ -106,14 +106,12 @@ class kkys01Class extends WebApiBase {
                         vod_lang = text.replace('语言', '').trim()
                     }
                 }
-                let play_from = []
                 let playList = document.querySelectorAll('.source-item')
                 let juJiList = document.querySelectorAll('.episode-list')
                 let vod_play_from = ''
                 let vod_play_url = ''
                 for (let i = 0; i < playList.length; i++) {
                     let from = playList[i].querySelector('span')?.lastChild?.text?.trim() || `线路${i+1}`
-                    play_from.push(from)
                     let episodes = juJiList[i]?.querySelectorAll('a') || []
                     for (let ep of episodes) {
                         let epName = ep.text?.trim() || ''
