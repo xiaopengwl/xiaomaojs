@@ -1,7 +1,7 @@
 var rule = {
     title: '百思派电影网',
     host: 'https://www.bestpipe.cn',
-    url: '/vodshow/fyclass-----------.html',
+    url: '/vodtype/fyclass-fypage.html',
     searchUrl: '/vodsearch/-------------.html;post',
     searchable: 2,
     quickSearch: 0,
