@@ -34,7 +34,6 @@ var rule = {
             input = '';
             return;
         }
-
         var url = obj.url;
         if (obj.encrypt === '1') {
             url = unescape(url);
@@ -43,31 +42,8 @@ var rule = {
                 url = decodeURIComponent(atob(url));
             } catch (e) {}
         } else if (obj.encrypt === '3') {
-            // Try RC4 decrypt; if fails, return iframe URL
-            try {
-                var raw = atob(url);
-                var xored = '';
-                for (var i = 0; i < raw.length; i++) {
-                    xored += String.fromCharCode(raw.charCodeAt(i) ^ 0x53);
-                }
-                var vid = obj.id || '';
-                var vidHash = CryptoJS.MD5(String(vid)).toString();
-                var secretKeySeed = 'ZGp3AwZ1ZGR5ZyWMA2H0BT5uEyuDp0kXDj==';
-                var videoHash = 'e17fda750783b36b07869ae02270421d';
-                var key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(vidHash + secretKeySeed + videoHash)).toString();
-                var decrypted = CryptoJS.RC4.decrypt(xored, CryptoJS.enc.Hex.parse(key));
-                var finalUrl = decrypted.toString(CryptoJS.enc.Utf8);
-                if (finalUrl && finalUrl.indexOf('http') === 0) {
-                    url = finalUrl;
-                } else {
-                    throw new Error('decrypt failed');
-                }
-            } catch (e) {
-                // Fallback: return iframe URL, let sniffer catch m3u8
-                url = 'https://www.libvio.lat/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
-            }
+            url = 'https://www.libvio.lat/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
         }
-
         if (obj.from && obj.from !== 'link') {
             url = {
                 jx: 0,
@@ -86,7 +62,7 @@ var rule = {
         desc: '.stui-content__detail p.data--span',
         content: '.detail-sketch,.detail-content--span',
         tabs: 'h3.icon-iconfontplay2',
-        lists: 'ul.stui-content__playlist:eq(#id)&&>li',
+        lists: 'ul.stui-content__playlist:eq(#id)&&li',
         tab_text: '',
         list_text: 'a&&Text',
         list_url: 'a&&href'
