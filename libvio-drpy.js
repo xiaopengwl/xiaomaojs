@@ -17,14 +17,14 @@ var rule = {
     class_url: '1&2&3&4&5&6',
     play_parse: false,
     sniffer: 0,
-    lazy: $js.toString(() => {
-        let html = request(input);
-        let m = html.match(/player_aaaa\s*=\s*(\{.*?\})\s*[,;<]/s);
+    lazy: $js.toString(function() {
+        var html = request(input);
+        var m = html.match(/player_aaaa\s*=\s*(\{.*?\})\s*[,;<]/s);
         if (!m) {
             input = '';
             return;
         }
-        let obj;
+        var obj;
         try {
             obj = JSON.parse(m[1].replace(/\\\//g, '/'));
         } catch (e) {
@@ -34,7 +34,7 @@ var rule = {
             input = '';
             return;
         }
-        let url = obj.url;
+        var url = obj.url;
         if (obj.encrypt === '1') {
             url = unescape(url);
         } else if (obj.encrypt === '2') {
@@ -52,24 +52,6 @@ var rule = {
         }
         input = url;
     }),
-    预处理: $js.toString(() => {
-        let html = fetch(rule.host, {headers: rule.headers});
-        // 提取首页分类导航
-        let navMatch = html.match(/class="stui-header[^"]*"[\s\S]*?<ul class="stui_header__user">/);
-        if (navMatch) {
-            let navHtml = navMatch[0];
-            let links = [];
-            let re = /<a[^>]+href="([^"]+)"[^>]*>([^<]+)<\/a>/g;
-            let m;
-            while ((m = re.exec(navHtml)) !== null) {
-                let href = m[1];
-                let text = m[2].trim();
-                if (href && text && !['首页', '搜索', '留言', '关于'].includes(text)) {
-                    links.push({text: text, url: href});
-                }
-            }
-        }
-    }),
     "推荐": '.stui-vodlist__box;a&&title;a&&data-original;.pic-text&&Text;a&&href',
     "一级": '.stui-vodlist__box;a&&title;a&&data-original;.pic-text&&Text;a&&href',
     "二级": {
@@ -77,21 +59,8 @@ var rule = {
         img: '.stui-content__thumb a.pic img&&data-original',
         desc: '.stui-content__detail p.data--span',
         content: '.detail-sketch,.detail-content--span',
-        tabs: $js.toString(() => {
-            let html = document.html;
-            // 分别提取所有 h3 和所有 ul，通过索引关联
-            let h3s = pdfa(html, 'h3.icon-iconfontplay2');
-            let uls = pdfa(html, 'ul.stui-content__playlist');
-            // 返回纯文本数组，长度 = tab 数量
-            return h3s.map((h3, i) => pdfh(h3, 'h3&&Text'));
-        }),
-        lists: $js.toString(() => {
-            let html = document.html;
-            let h3s = pdfa(html, 'h3.icon-iconfontplay2');
-            let uls = pdfa(html, 'ul.stui-content__playlist');
-            // 返回嵌套数组，每项对应一个 tab 的所有集数
-            return h3s.map((h3, i) => uls[i] ? pdfa(uls[i], 'li') : []);
-        }),
+        tabs: 'h3.icon-iconfontplay2',
+        lists: '.stui-content__playlist',
         tab_text: '',
         list_text: 'a&&Text',
         list_url: 'a&&href'
