@@ -77,9 +77,22 @@ var rule = {
         img: '.stui-content__thumb a.pic img&&data-original',
         desc: '.stui-content__detail p.data--span',
         content: '.detail-sketch,.detail-content--span',
-        tabs: '.stui-play__list:eq(0)&&li',
-        lists: '.stui-content__playlist:eq(#id)&&li',
-        tab_text: 'a&&Text',
+        tabs: $js.toString(() => {
+            let html = document.html;
+            // 分别提取所有 h3 和所有 ul，通过索引关联
+            let h3s = pdfa(html, 'h3.icon-iconfontplay2');
+            let uls = pdfa(html, 'ul.stui-content__playlist');
+            // 返回纯文本数组，长度 = tab 数量
+            return h3s.map((h3, i) => pdfh(h3, 'h3&&Text'));
+        }),
+        lists: $js.toString(() => {
+            let html = document.html;
+            let h3s = pdfa(html, 'h3.icon-iconfontplay2');
+            let uls = pdfa(html, 'ul.stui-content__playlist');
+            // 返回嵌套数组，每项对应一个 tab 的所有集数
+            return h3s.map((h3, i) => uls[i] ? pdfa(uls[i], 'li') : []);
+        }),
+        tab_text: '',
         list_text: 'a&&Text',
         list_url: 'a&&href'
     },
