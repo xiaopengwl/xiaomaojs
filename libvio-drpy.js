@@ -16,7 +16,7 @@ var rule = {
     class_name: '电影&电视剧&纪录片&动漫&综艺&专题',
     class_url: '1&2&3&4&5&6',
     play_parse: false,
-    sniffer: 0,
+    sniffer: 1,
     lazy: $js.toString(function() {
         var html = request(input);
         var m = html.match(/player_aaaa\s*=\s*(\{.*?\})\s*[,;<]/s);
@@ -34,6 +34,7 @@ var rule = {
             input = '';
             return;
         }
+
         var url = obj.url;
         if (obj.encrypt === '1') {
             url = unescape(url);
@@ -41,7 +42,16 @@ var rule = {
             try {
                 url = decodeURIComponent(atob(url));
             } catch (e) {}
+        } else if (obj.encrypt === '3') {
+            // Step 1: base64 decode, Step 2: XOR 0x53
+            var data = atob(url);
+            var xored = '';
+            for (var i = 0; i < data.length; i++) {
+                xored += String.fromCharCode(data.charCodeAt(i) ^ 0x53);
+            }
+            url = xored;
         }
+
         if (obj.from && obj.from !== 'link') {
             url = {
                 jx: 0,
