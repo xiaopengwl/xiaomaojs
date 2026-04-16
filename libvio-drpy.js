@@ -16,7 +16,7 @@ var rule = {
     class_name: '电影&电视剧&纪录片&动漫&综艺&专题',
     class_url: '1&2&3&4&5&6',
     play_parse: false,
-    sniffer: 0,
+    sniffer: 1,
     lazy: $js.toString(function() {
         var html = request(input);
         var m = html.match(/player_aaaa\s*=\s*(\{.*?\})\s*[,;<]/s);
@@ -43,26 +43,28 @@ var rule = {
                 url = decodeURIComponent(atob(url));
             } catch (e) {}
         } else if (obj.encrypt === '3') {
-            // Step 1: base64 decode -> XOR 0x53
-            var raw = atob(url);
-            var xored = '';
-            for (var i = 0; i < raw.length; i++) {
-                xored += String.fromCharCode(raw.charCodeAt(i) ^ 0x53);
-            }
-            // Step 2: RC4 decrypt with key = MD5(vidHash + secretKeySeed + videoHash)
-            var vid = obj.id || '';
-            var vidHash = CryptoJS.MD5(String(vid)).toString();
-            var secretKeySeed = 'ZGp3AwZ1ZGR5ZyWMA2H0BT5uEyuDp0kXDj==';
-            var videoHash = 'e17fda750783b36b07869ae02270421d';
-            var key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(vidHash + secretKeySeed + videoHash)).toString();
-            var decrypted = CryptoJS.RC4.decrypt(xored, CryptoJS.enc.Hex.parse(key));
-            var finalUrl = decrypted.toString(CryptoJS.enc.Utf8);
-            // If decryption failed, fall back to iframe
-            if (finalUrl && finalUrl.indexOf('http') === 0) {
-                url = finalUrl;
-            } else {
-                // Fall back to iframe approach
-                url = '/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
+            // Try RC4 decrypt; if fails, return iframe URL
+            try {
+                var raw = atob(url);
+                var xored = '';
+                for (var i = 0; i < raw.length; i++) {
+                    xored += String.fromCharCode(raw.charCodeAt(i) ^ 0x53);
+                }
+                var vid = obj.id || '';
+                var vidHash = CryptoJS.MD5(String(vid)).toString();
+                var secretKeySeed = 'ZGp3AwZ1ZGR5ZyWMA2H0BT5uEyuDp0kXDj==';
+                var videoHash = 'e17fda750783b36b07869ae02270421d';
+                var key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(vidHash + secretKeySeed + videoHash)).toString();
+                var decrypted = CryptoJS.RC4.decrypt(xored, CryptoJS.enc.Hex.parse(key));
+                var finalUrl = decrypted.toString(CryptoJS.enc.Utf8);
+                if (finalUrl && finalUrl.indexOf('http') === 0) {
+                    url = finalUrl;
+                } else {
+                    throw new Error('decrypt failed');
+                }
+            } catch (e) {
+                // Fallback: return iframe URL, let sniffer catch m3u8
+                url = 'https://www.libvio.lat/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
             }
         }
 
