@@ -60,7 +60,8 @@ var rule = {
         desc: '.stui-content__detail p.data--span',
         content: '.detail-sketch,.detail-content--span',
         tabs: $js.toString(function() {
-            var h3s = pdfa(document.html, 'h3.icon-iconfontplay2');
+            var html = input;
+            var h3s = pdfa(html, 'h3.icon-iconfontplay2');
             var result = [];
             for (var i = 0; i < h3s.length; i++) {
                 result.push(pdfh(h3s[i], 'h3&&Text'));
@@ -68,8 +69,9 @@ var rule = {
             return result;
         }),
         lists: $js.toString(function() {
-            var h3s = pdfa(document.html, 'h3.icon-iconfontplay2');
-            var uls = pdfa(document.html, 'ul.stui-content__playlist');
+            var html = input;
+            var h3s = pdfa(html, 'h3.icon-iconfontplay2');
+            var uls = pdfa(html, 'ul.stui-content__playlist');
             var result = [];
             for (var i = 0; i < h3s.length; i++) {
                 var li = uls[i] ? pdfa(uls[i], 'li') : [];
