@@ -16,7 +16,7 @@ var rule = {
     class_name: '电影&电视剧&纪录片&动漫&综艺&专题',
     class_url: '1&2&3&4&5&6',
     play_parse: false,
-    sniffer: 1,
+    sniffer: 0,
     lazy: $js.toString(function() {
         var html = request(input);
         var m = html.match(/player_aaaa\s*=\s*(\{.*?\})\s*[,;<]/s);
@@ -42,6 +42,7 @@ var rule = {
                 url = decodeURIComponent(atob(url));
             } catch (e) {}
         } else if (obj.encrypt === '3') {
+            // Return iframe URL directly — zyfun embeds it and artplayer plays inside
             url = 'https://www.libvio.lat/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
         }
         if (obj.from && obj.from !== 'link') {
