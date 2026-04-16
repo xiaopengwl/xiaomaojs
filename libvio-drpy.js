@@ -12,7 +12,7 @@ var rule = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Referer': 'https://www.libvio.lat/',
     },
-    timeout: 15000,
+    timeout: 30000,
     class_name: '电影&电视剧&纪录片&动漫&综艺&专题',
     class_url: '1&2&3&4&5&6',
     play_parse: false,
