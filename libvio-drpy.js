@@ -59,8 +59,28 @@ var rule = {
         img: '.stui-content__thumb a.pic img&&data-original',
         desc: '.stui-content__detail p.data--span',
         content: '.detail-sketch,.detail-content--span',
-        tabs: 'h3.icon-iconfontplay2',
-        lists: '.stui-content__playlist',
+        tabs: $js.toString(function() {
+            var h3s = pdfa(document.html, 'h3.icon-iconfontplay2');
+            var result = [];
+            for (var i = 0; i < h3s.length; i++) {
+                result.push(pdfh(h3s[i], 'h3&&Text'));
+            }
+            return result;
+        }),
+        lists: $js.toString(function() {
+            var h3s = pdfa(document.html, 'h3.icon-iconfontplay2');
+            var uls = pdfa(document.html, 'ul.stui-content__playlist');
+            var result = [];
+            for (var i = 0; i < h3s.length; i++) {
+                var li = uls[i] ? pdfa(uls[i], 'li') : [];
+                var arr = [];
+                for (var j = 0; j < li.length; j++) {
+                    arr.push(pdfh(li[j], 'a&&Text') + '$' + pdfh(li[j], 'a&&href'));
+                }
+                result.push(arr);
+            }
+            return result;
+        }),
         tab_text: '',
         list_text: 'a&&Text',
         list_url: 'a&&href'
