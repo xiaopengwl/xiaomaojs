@@ -42,8 +42,9 @@ var rule = {
                 url = decodeURIComponent(atob(url));
             } catch (e) {}
         } else if (obj.encrypt === '3') {
-            // Return iframe URL directly — zyfun embeds it and artplayer plays inside
-            url = 'https://www.libvio.lat/static/player/artplayer/?url=' + encodeURIComponent(obj.url) + '&next=';
+            // obj.url is already XOR-0x53 + hex encoded. artplayer decodes it internally.
+            // Just construct the iframe URL — no extra encoding needed.
+            url = 'https://www.libvio.lat/static/player/artplayer/?url=' + obj.url + '&next=' + input;
         }
         if (obj.from && obj.from !== 'link') {
             url = {
